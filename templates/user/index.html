@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block newcontent %}
+<div class="row">
+    <div class="col-md-8 col-sm-offset-2">
+        <div class="panel panel-info ">
+            <div class="panel-heading">文章</div>
+            <div class="panel-body">
+
+                <ul class="list-group">
+                    {% for art in paginate.items %}
+                    <li class="list-group-item" style="margin-bottom:20px">
+                        <div class="art">
+                            <h4><a href="{{ url_for('article.detail')}}?aid={{ art.id }}">{{ art.title }}</a></h4>
+                            <div >
+                                <span>作者: {{ art.user.username }}</span><br>
+                                <p>{{ art.content| cdecode | safe }}</p>
+                            </div>
+                            <div>
+                                <span>发布时间:{{ art.pdateTime }}</span>
+                                <span>收藏：{{ art.save_num }}</span>
+                                <span>点击量:{{ art.click_num }}</span>
+                                <span>喜欢：{{ art.love_num }}</span>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div align="center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li {% if not paginate.has_prev %} class="disabled" {% endif %}>
+                <a href="{{ url_for('user.index')}}?page={{paginate.prev_num}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {%for page in range(1,paginate.pages + 1)%}
+            <li {%if paginate.page == page %} class="active" {% endif %}><a href=" {{ url_for('user.index')}}?page={{ page }}">{{ page }}</a></li>
+            {% endfor %}
+            <li {% if not paginate.has_next %} class="disabled" {% endif %}>
+                <a href="{{ url_for('user.index')}}?page={{paginate.next_num}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}

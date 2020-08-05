@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章列表</title>
+    <style>
+        .container{
+             border:1px solid black;
+             margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+{% for us  in user %}
+{% for ar in us.articles %}
+    <div class="container">
+         <p>文章标题:{{ ar.title }}</p>
+         <p>作者:{{ us.username }} </p>
+         <p>{{ ar.content }}</p>
+         <p>{{ ar.pdateTime }}</p>
+    </div>
+{% endfor %}
+{% endfor %}
+
+{% for art in arts%}
+    <div class="container">
+         <p>文章标题:{{ art.title }}</p>
+         <p>内容:{{ art.content }}</p>
+         <p>作者:{{ art.user.username }} </p>
+    </div>
+{% endfor %}
+</body>
+</html>

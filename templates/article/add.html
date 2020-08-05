@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加文章</title>
+</head>
+<body>
+  <form action="{{ url_for('article.add') }}" method="post">
+    <p>标题:<input type="text" name="title"></p>
+    <p>文章内容</p>
+      <textarea rows="5" cols="60" name="content"></textarea>
+    <p>作者:<input type="text" name="uid"></p>
+    <p><input type="submit" value="提交"></p>
+   </form>
+</body>
+</html>

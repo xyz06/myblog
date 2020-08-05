@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{%block title %} 我的相册{%endblock%}
+{%block styles %}
+{{ super() }}
+{%endblock%}
+
+{%block newcontent %}
+<div class="container">
+    <div class="content">
+        <div class="row">
+            {% for photo in photos %}
+            <div class="col-xs-6 col-md-3">
+                <a href="#" class="thumbnail">
+                    <img src="{{ url_for('static',filename='upload/images/'+ photo.photo_name) }}" alt="..." class="img-thumbnail">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+{%endblock%}
+
+{%block scripts%}
+{{ super() }}
+{%endblock%}

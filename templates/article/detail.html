@@ -1,0 +1,143 @@
+{% extends 'base.html'%}
+{% block title %}  文章详情 {% endblock %}
+{% block newcontent %}
+<div class="container">
+    <div class="col-md-12">
+        <div class="panel panel-success ">
+            <div id="detail" class="center">
+                <h3>{{ art.title }}</h3>
+                <div>
+                    <div style="float:left">
+                        作者:{{ art.user.username }} {{ art.pdateTime }}&nbsp&nbsp
+                    </div>
+                    <div style="float:right">
+                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp<span>{{ art.love_num }}</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp<span>{{ art.save_num }}</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp<span>{{ art.click_num }}</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+                <br>
+                <div>
+                    {{ art.content | safe }}
+                </div>
+                <hr>
+                <div class="commet">
+                    <div class="commet-c">
+                        <form class="form-horizontal" action="{{ url_for('article.comment') }}" method="get">
+                            <input hidden name="aid" value="{{ art.id }}">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <textarea class="col-sm-10" name="content" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-info col-sm-2" >评论</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="comment-item">
+                       {% if art.comments %}
+                        {% for  comment in art.comments %}
+                        <div class="item" style="margin-bottom:20px">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="{% if comment.user.icon %} {{ url_for('static', filename=comment.user.icon) }} {% else %} {{url_for('static', filename='upload/icon/057.jpg') }}     {%endif %} " class="img-circle" width="50" height="50">
+                                </div>
+                                <div class="col-md-8">
+                                    <p style="margin-bottom:4px" class="word">评论人:{{ comment.user.username }}&nbsp {{ comment.cdatetime }} </p>
+                                    <p class="word">{{ comment.comment | safe }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor%}
+                        {% else %}
+                        <div class="item">
+                            还没有人评论过,快来评论吧
+                        </div>
+                        {% endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block styles%}
+{{ super() }}
+<style>
+       .change{
+          color:blue;
+       }
+
+      .center{
+         width:90%;
+         margin: 0 auto;
+
+      }
+
+      .word{
+        font-size:10px;
+      }
+
+</style>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+
+        //点赞
+        $(document).ready(function(){
+             $('.glyphicon-thumbs-up').click(function(){
+                   var $this = $(this);
+                   $(this).toggleClass(function(){
+                         if($(this).hasClass('change')){
+                             $.get("{{url_for('article.love')}}",{aid:{{art.id}}}, function(data){
+                                     $this.next('span').text(data.num);
+                             })
+                         }else{
+                              $.get("{{url_for('article.love')}}",{aid:{{art.id}}, no:'0'}, function(data){
+
+                                     $this.next('span').text(data.num);
+                             })
+                         }
+                         return 'change'
+                   })
+
+             });
+
+
+            $('.glyphicon-heart-empty').click(function(){
+                   var $this = $(this);
+                   $(this).toggleClass(function(){
+                         if($(this).hasClass('change')){
+                             $.get("{{url_for('article.save')}}",{aid:{{art.id}}}, function(data){
+                                     $this.next('span').text(data.num);
+                             })
+                         }else{
+                              $.get("{{url_for('article.save')}}",{aid:{{art.id}}, no:'0'}, function(data){
+
+                                     $this.next('span').text(data.num);
+                             })
+                         }
+                         return 'change'
+                   })
+
+             });
+
+        })
+
+
+
+
+
+
+</script>
+
+{% endblock %}

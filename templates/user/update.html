@@ -1,0 +1,12 @@
+
+<div>
+    <h1>用户更新</h1>
+    <form action="{{ url_for('user.update') }}" method="post">
+        <p><input type="hidden" value="{{ user.id }}" name="id"></p>
+        <p><input type="text" value="{{ user.username }}" name="username">{{ msg }}</p>
+        <p><input type="password" value=" {{ user.pwd }}" disabled></p>
+        <p><input type="text" value="{{ user.phone }} " name="phone"></p>
+        <p><input type="submit"  value="修改"></p>
+    </form>
+
+</div>

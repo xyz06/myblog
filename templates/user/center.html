@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block newcontent %}
+<div class="row">
+    <div class="col-md-2 col-sm-offset-2">
+        <div class="panel panel-success ">
+            <div class="panel-heading">管理中心</div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <a class="list-group-item"><span class="badge">14</span>用户信息更改</a>
+                    <a class="list-group-item ">发表文章</a>
+                    <a class="list-group-item">管理相册</a>
+                    <a class="list-group-item">管理留言</a>
+                    <a class="list-group-item">关于我设置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="right">
+            <div class="panel panel-success ">
+                <div class="panel-heading">用户信息</div>
+                <div class="panel-body">
+                    <div class="center-block">
+                        <div class="row">
+                            <form class="form-horizontal" action="{{ url_for('user.update') }}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="inputUsername" class="col-sm-2 control-label">用户名</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="inputUsername" placeholder="用户名"
+                                               name="username" value="{{ user.username }}">{{
+                                        msg }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPhone" class="col-sm-2 control-label">手机号码</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="inputPhone" placeholder="用户名"
+                                               name="phone" value="{{ g.user.phone }}">{{
+                                        msg }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">修改图片</label>
+                                    <div class="col-sm-8">
+                                        <input type="file" class="form-control" id="inputPassword3"
+                                               name="icon">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="img col-sm-offset-2">
+                                        <img src="{% if user.icon %} {{ url_for('static',filename=user.icon) }} {% else %} {{ url_for('static',filename='image/bg5.jpg') }} {%endif %}"
+                                             alt="..." class="img-thumbnail">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-4 col-sm-8">
+                                        <button type="submit" class="btn btn-info col-sm-4">点击修改</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success ">
+                <div class="panel-heading">发表文章</div>
+                <div class="panel-body">
+                    <div>
+                        <form class="form-horizontal" action="{{ url_for('article.publish') }}" method="post"
+                              enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="文章标题" name="title">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="type">
+                                    {% for t in types %}
+                                    <option value="{{ t.id }}">{{ t.art_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control mytextarea" name="content"
+                                          style="height:600px"></textarea>
+                            </div>
+                            <div class="form-group"><input type="submit" class="form-control" value="发表文章"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success ">
+                <div class="panel-heading">管理相册</div>
+                <div class="panel-body">
+                    <div class="content">
+                        <div class="row">
+                            <form class="form-horizontal" action="{{ url_for('user.photo') }}" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-sm-offset-3">
+                                        <input type="file" class="form-control" name="photo">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-4 col-sm-8">
+                                        <button type="submit" class="btn btn-info col-sm-4">点击上传</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row" style="padding-lef:20px,padding-right:20px">
+                            {% for photo in photos%}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="#" class="thumbnail">
+                                    <img src="{{ url_for('static',filename='/upload/images/'+photo.photo_name) }}"
+                                         alt="..."
+                                         class="img-thumbnail">
+                                </a>
+                                <button type="submit" class="btn btn-info btn-sm photo-del" tag="{{ photo.id}}">删除
+                                </button>
+                            </div>
+                            {% endfor %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="#" class="thumbnail">
+                                    <img src="{% if user.icon %} {{ url_for('static',filename=user.icon) }} {% else %} {{ url_for('static',filename='image/bg5.jpg') }} {%endif %}"
+                                         alt="..." class="img-thumbnail">
+                                </a>
+                            </div>
+                            <div class="col-xs-6 col-md-3">
+                                <a href="#" class="thumbnail">
+                                    <img src="{% if user.icon %} {{ url_for('static',filename=user.icon) }} {% else %} {{ url_for('static',filename='image/bg5.jpg') }} {%endif %}"
+                                         alt="..." class="img-thumbnail">
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success ">
+                <div class="panel-heading">管理留言</div>
+                <div class="panel-body">
+                    <div>
+                        <table class="table table-hover">
+                            <tr>
+                                <td>序号</td>
+                                <td>留言人</td>
+                                <td>内容</td>
+                                <td>时间</td>
+                                <td>操作</td>
+                            </tr>
+                            {% for message in board  %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{% if message.user_id %} {{ message.user.username }} {%else %}{{'匿名用户' }} {% endif%}</td>
+                                <td>{{ message.content }}</td>
+                                <td>{{ message.mdatetime }} </td>
+                                <td><a href="{{ url_for('user.del_message')}}?bid={{ message.id }}">删除</a> </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success ">
+                <div class="panel-heading">关于我设置</div>
+                <div class="panel-body">
+                    <div>
+                        <div>
+                            <form class="form-horizontal" action="{{ url_for('user.aboutme') }}" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="form-group">
+                                <textarea class="form-control mytextarea" name="about"
+                                          style="height:600px"></textarea>
+                                </div>
+                                <div class="form-group"><input type="submit" class="form-control" value="点击修改"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+   {{super()}}
+    <script src="{{url_for('static',filename='tinymce/tinymce.min.js')}}"></script>
+    <script>
+   $(function(){
+   tinymce.init({
+    selector: '.mytextarea',
+    height:400,
+    language:'zh_CN',
+     plugins: 'quickbars emoticons',
+    quickbars_insert_toolbar: 'quickimage quicktable',
+    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote',
+    //skin: 'oxide-dark',
+  });
+      $('.right > div').hide();
+      $('.right > div').first().show();
+      $('.list-group > a').each(function(i){
+          $(this).click(function(){
+               // $(this).css({'background-color':'red'});
+                $('.right >  div').hide();
+                $('.right > div').eq(i).show();
+          });
+
+      });
+
+
+      $('.photo-del').click(function(){
+         var flag = confirm('确定删除吗？');
+          if(flag){
+            var pid = $(this).attr('tag');
+            location.href = '/user/photo_del?pid=' + pid;
+          }
+
+      });
+    });
+
+
+
+            </script>
+            {% endblock %}
